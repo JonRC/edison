@@ -1,5 +1,6 @@
-import { Workbook, Worksheet } from "exceljs";
+import { Cell, CellValue, Workbook, Worksheet } from "exceljs";
 import { resolve } from "path";
+import moment from "moment";
 
 export const getXlsxData = async () => {
   const workbook = new Workbook();
@@ -25,8 +26,9 @@ const getData = (sheet: Worksheet) => {
 
     row.eachCell((cell) => {
       const column = cell.col;
-      const value = cell.value.toString();
-      const key = sheet.getCell(1, column).value.toString();
+      const value = valueToString(cell.value);
+      const keyValue = sheet.getCell(1, column).value.toString();
+      const key = valueToString(keyValue);
 
       dataItem = { ...dataItem, [key]: value };
     });
@@ -35,4 +37,12 @@ const getData = (sheet: Worksheet) => {
   });
 
   return data;
+};
+
+const valueToString = (cellValue: CellValue) => {
+  if (cellValue instanceof Date) {
+    return moment(cellValue).format("DD/MM/YYYY");
+  }
+
+  return cellValue.toString();
 };
