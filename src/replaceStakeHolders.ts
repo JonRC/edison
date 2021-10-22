@@ -1,4 +1,5 @@
 import fs from "fs/promises";
+import { existsSync } from "fs";
 import createReport from "docx-templates";
 import { resolve } from "path";
 
@@ -9,13 +10,15 @@ export const replaceStakeholders = async (
   outFile?: string
 ) => {
   const templatePath = resolve(process.cwd(), "modelo.docx");
-  const outPath = (name: string) =>
-    resolve(process.cwd(), "gerados", `${name}.docx`);
+
+  const outPath = resolve(process.cwd(), "gerados");
+  createPath(outPath);
+
+  const outFilePath = (name: string) => resolve(outPath, `${name}.docx`);
 
   const template = await fs.readFile(templatePath);
 
   const fileWrites = dataToReplace.map(async (data, index) => {
-    console.log(data);
     const buffer = await createReport({
       template,
       data,
@@ -28,7 +31,7 @@ export const replaceStakeholders = async (
       index,
     });
 
-    const fileWrite = await fs.writeFile(outPath(fileName), buffer);
+    const fileWrite = await fs.writeFile(outFilePath(fileName), buffer);
     return fileWrite;
   });
 
@@ -55,4 +58,9 @@ const fileNameGenerator = (i: {
   } else {
     return `${name} - ${index + 1}`;
   }
+};
+
+const createPath = (path: string) => {
+  const pathNotExists = !existsSync(path);
+  if (pathNotExists) fs.mkdir(path, { recursive: true });
 };

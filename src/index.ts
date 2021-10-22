@@ -1,16 +1,12 @@
+import { getXlsxData } from "./getXlsxData";
 import { replaceStakeholders } from "./replaceStakeHolders";
 
-const data = [
-  {
-    nome: "jonathan",
-    cidade: "terras do mar",
-    cpf: "123.456.789-10",
-  },
-  {
-    nome: "leandro",
-    cidade: "montanhas da matemática",
-    cpf: "321.654.987-01",
-  },
-];
+const main = async () => {
+  const data = await getXlsxData();
 
-replaceStakeholders(data, "documento {{rg}}").catch(console.error);
+  replaceStakeholders(data, "documento {{cpf}}");
+};
+
+main().catch(() => {
+  process.exit(1);
+});
