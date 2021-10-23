@@ -1,4 +1,4 @@
-import { readFile } from "fs/promises";
+import { readFile, writeFile } from "fs/promises";
 import { resolve } from "path";
 
 type Config = {
@@ -7,6 +7,8 @@ type Config = {
 
 export const getConfig = async () => {
   const configPath = resolve(process.cwd(), "config.txt");
+
+  await generateConfig(configPath);
 
   const configText = await readFile(configPath, "utf8");
 
@@ -21,4 +23,9 @@ export const getConfig = async () => {
     }, {} as Config);
 
   return config;
+};
+
+const generateConfig = async (configPath: string) => {
+  const configText = `savarComo = documento`;
+  return await writeFile(configPath, configText);
 };

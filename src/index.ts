@@ -4,11 +4,11 @@ import { replaceStakeholders } from "./replaceStakeHolders";
 
 const main = async () => {
   console.log(`
-    Idealizado por: Leandro Oliveira || https://www.instagram.com/chirodinguer/
-    Desenvolvidor por: Jonathan Rodrigues || https://www.linkedin.com/in/jonathan-rodrigues-cardoso/
+    Idealizado por Leandro Oliveira || https://www.instagram.com/chirodinguer/
+    Desenvolvidor por Jonathan Rodrigues || https://www.linkedin.com/in/jonathan-rodrigues-cardoso/
   `);
 
-  const waiting = wait(3000);
+  const waiting = wait(5000);
 
   const data = await getXlsxData();
 
@@ -24,5 +24,6 @@ main().catch((error) => {
   setTimeout(() => process.exit(1), 3000);
 });
 
-const wait = (time: number) =>
-  new Promise((resolve) => setTimeout(resolve, time));
+function wait(time: number) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
