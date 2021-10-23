@@ -1,3 +1,4 @@
+import { existsSync } from "fs";
 import { readFile, writeFile } from "fs/promises";
 import { resolve } from "path";
 
@@ -26,6 +27,10 @@ export const getConfig = async () => {
 };
 
 const generateConfig = async (configPath: string) => {
+  const configReadyExists = await existsSync(configPath);
+
+  if (configReadyExists) return;
+
   const configText = `savarComo = documento`;
   return await writeFile(configPath, configText);
 };
